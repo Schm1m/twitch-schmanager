@@ -17,26 +17,11 @@ const nameRegex = /^\s[^\s]*/ // regex for timer name
 
 function test(input) {
     let time, subcmd, name
-    try { // try to find a timing in the input
-        time = input.match(timeRegex)[0]
-    } catch (err) {
-        console.log(err)
-        return 101
-    }
+    if (errorHandler(tryMatchTime(input, true))) return
     input = input.replace(timeRegex, "")
-    try { // try to find a subcommand in the input
-        subcmd = input.match(subcmdRegex)[0].replace(" ", "")
-    } catch (error) {
-        console.log(error)
-        return 102
-    }
+    if (errorHandler(tryMatchSubcmd(input, true))) return
     input = input.replace(subcmdRegex, "")
-    try { // try to find a name in the input
-        name = input.match(nameRegex)[0].replace(" ", "")
-    } catch (error) {
-        console.log(error)
-        return 103
-    }
+    if (errorHandler(tryMatchName(input, true))) return
     input = input.replace(nameRegex, "")
     while (input.startsWith(" ")) {
         input = input.slice(1)
@@ -50,28 +35,54 @@ function test(input) {
         console.log(error)
         return 104
     }
-    return 0
+    errorHandler(0)
+
+    function tryMatchTime(input, force) {
+        try { // try to find a timing in the input
+            time = input.match(timeRegex)[0]
+        } catch (err) {
+            //console.log(err)
+            if (force) return 101
+        }
+    }
+    function tryMatchSubcmd(input, force) {
+        try { // try to find a subcommand in the input
+            subcmd = input.match(subcmdRegex)[0].replace(" ", "")
+        } catch (error) {
+            //console.log(error)
+            if (force) return 102
+        }
+    }
+    function tryMatchName(input, force) {
+        try { // try to find a name in the input
+            name = input.match(nameRegex)[0].replace(" ", "")
+        } catch (error) {
+            //console.log(error)
+            if (force) return 103
+        }
+    }
 }
-let i = 1
-teststrings.forEach(element => {
-    switch (test(element)) {
+function errorHandler(e) {
+    switch (e) {
         case 0:
-            console.log(`Teststring ${i} passed all tests`)
-            break
+            console.log(`Teststring passed all tests`)
+            return 1
         case 101:
             console.log("couldnt match time regex")
-            break
+            return 1
         case 102:
             console.log("couldn match subcommand regex")
-            break
+            return 1
         case 103:
             console.log("couldnt match name regex")
-            break
+            return 1
         case 104:
             console.log("couldnt print vars")
-            break
+            return 1
         default:
-            console.log("unknown error with timer command")
     }
-    i++
+}
+
+teststrings.forEach(element => {
+    test(element)
 });
