@@ -5,22 +5,22 @@ const teststrings = [
     "ddHuh skskdj %@*@"
 ]
 let crons = {
-    "sena": {
-        "text": "test4",
-        "channel": "sog_lokii",
-        "time": "0-22-22-1-1-1"
+    sena: {
+        text: "test4",
+        channel: "sog_lokii",
+        time: "0-22-22-1-1-1"
     }
 }
-const timeRegex = /(\*|([0-9]|[1-5][0-9]))-(\*|([0-9]|[1-5][0-9]))-(\*|([0-9]|1[0-9]|2[0-3]))-(\*|([1-9]|[12][0-9]|3[01]))-(\*|([1-9]|1[0-2]))-(\*|[0-7])/ // regex for cron timings
+const timeRegex = /(\*|([0-9]|[1-5][0-9]))-(\*|([0-9]|[1-5][0-9]))-(\*|([0-9]|1[0-9]|2[0-3]))-(\*|([1-9]|[12][0-9]|3[01]))-(\*|([1-9]|1[0-2]))-(\*|[0-7])$/ // regex for cron timings
 const subcmdRegex = /^((-h|help)|(-a|add)|(-e|edit)|(-d|delete))/ // regex for subcommands
 const nameRegex = /^\s[^\s]*/ // regex for timer name
 
 function test(input) {
     let time, subcmd, name
-    if (errorHandler(tryMatchTime(input, true))) return
-    input = input.replace(timeRegex, "")
     if (errorHandler(tryMatchSubcmd(input, true))) return
     input = input.replace(subcmdRegex, "")
+    if (errorHandler(tryMatchTime(input, true))) return
+    input = input.replace(timeRegex, "")
     if (errorHandler(tryMatchName(input, true))) return
     input = input.replace(nameRegex, "")
     while (input.startsWith(" ")) {
