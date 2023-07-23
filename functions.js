@@ -12,3 +12,17 @@ export async function whatCommand(msg) {
 export async function updateCrons() {
 
 }
+
+export function removeSpaceStart(txt) {
+    while (txt.startsWith(" ")) {
+        txt = txt.slice(1)
+    }
+    return txt
+}
+
+export function removeSpaceEnd(txt) {
+    while (txt.endsWith(" ")) {
+        txt = txt.slice(0, -1)
+    }
+    return txt
+}
