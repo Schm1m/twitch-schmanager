@@ -24,8 +24,8 @@ const twitchChat = chatClient.onMessage(async (channel, user, text, msg) => {
         if (msg.userInfo.isMod == true || msg.userInfo.isBroadcaster == true || user == "schm1m") {
             const command = await import(`./commands/${await whatCommand(text)}.js`)
             try {
+                console.log(`executing command (${command.data.name})`)
                 await command.execute(channel, text)
-                console.log(`executing ${command.data.name}`)
             } catch (error) {
                 console.log(error)
             }

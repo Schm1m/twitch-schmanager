@@ -26,3 +26,7 @@ export function removeSpaceEnd(txt) {
     }
     return txt
 }
+
+export function predefError(reason) {
+    return `command failed. reason: ${reason}`
+}
