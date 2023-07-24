@@ -31,7 +31,7 @@ export async function execute(channel, msg) {
     switch (subcmd) {
         case "-h":
         case "help":
-            await say(channel, `command usage: (~timer {subcmd} {name} {text} {time}). Available subcommands: (help/edit/delete/add) or in short (-h/-e/-d/-a). time syntax (in cron syntax): ({sec}-{min}-{hour}-{day}-{month}-{weekday})`)
+            await say(channel, `command usage: (~timer {subcmd} {name} {text} {time}). Available subcommands: (help/edit/delete/add) or in short (-h/-e/-d/-a). time syntax (in cron syntax): ({sec}-{min}-{hour}-{day}-{month}-{weekday}) "*" for a blank. exp: "0-15-0-*-*-*" repeats every day at 15 o´clock.`)
             break
         case "-e":
         case "edit":
