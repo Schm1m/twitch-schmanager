@@ -1,6 +1,6 @@
 import { error } from "console";
 import { say } from "../auth.js"
-import { updateCrons, removeSpaceStart, removeSpaceEnd, predefError } from "../functions.js";
+import { updateCrons, removeSpaceStart, predefError } from "../functions.js";
 import { promises as fs } from 'fs';
 
 const subcmdregex = /^((-h\b|\bhelp\b)|(-e\b|\bedit\b)|(-d\b|\bdelete\b)|(-a\b|\badd\b))/
@@ -16,6 +16,7 @@ export async function execute(channel, msg) {
 
     async function saveCrons() {
         await fs.writeFile("crons.json", JSON.stringify(crons))
+        await updateCrons()
     }
 
     msg = msg.replace(`~timer `, ``)
@@ -27,7 +28,6 @@ export async function execute(channel, msg) {
     const subcmd = msg.match(subcmdregex)[0]
     msg = msg.replace(subcmdregex, "")
     msg = removeSpaceStart(msg)
-    console.log({ subcmd, msg })
     switch (subcmd) {
         case "-h":
         case "help":
@@ -47,18 +47,18 @@ export async function execute(channel, msg) {
                 return
             }
             msg = msg.replace(editTimerName + " ", "")
-            const editTime = msg.match(timeregex)[0] ?? null
+            const editTime = msg.match(timeregex) ? msg.match(timeregex)[0] : null
             if (!editTime) {
                 crons[editTimerName].text = msg
                 await saveCrons()
-                //console.log(crons[editTimerName])
+                await say(channel, `successfully edited timer "${editTimerName}"`)
                 return
             }
             msg = msg.replace(" " + editTime, "")
             crons[editTimerName].text = msg
             crons[editTimerName].time = editTime
             await saveCrons()
-            //console.log(crons[editTimerName])
+            await say(channel, `successfully edited timer "${editTimerName}"`)
             break
         case "-d":
         case "delete":

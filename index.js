@@ -3,11 +3,7 @@ import { isCommand, whatCommand } from './functions.js';
 import { chatClient, say } from "./auth.js";
 import * as cron from 'node-cron'
 import { exec } from 'child_process'
-
-var task = cron.schedule('0 22 22 * * *', () => {
-    var test = exec('node ./timers/sena.js')
-})
-task.start()
+import { startAllTasks } from './crons.js';
 
 let commands = []
 const cmdFiles = fs2.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -17,6 +13,8 @@ for await (const file of cmdFiles) {
 }
 
 chatClient.connect()
+
+await startAllTasks()
 
 const twitchChat = chatClient.onMessage(async (channel, user, text, msg) => {
     if (msg.userInfo.userName == "schmanager") return

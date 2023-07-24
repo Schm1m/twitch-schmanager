@@ -9,8 +9,11 @@ export async function whatCommand(msg) {
     return msg.split(' ')[0].slice(1)
 }
 
-export async function updateCrons() {
+import { startAllTasks, stopAllTasks } from "./crons.js"
 
+export async function updateCrons() {
+    await stopAllTasks()
+    await startAllTasks()
 }
 
 export function removeSpaceStart(txt) {
