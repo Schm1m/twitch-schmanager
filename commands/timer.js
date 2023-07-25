@@ -81,6 +81,11 @@ export async function execute(channel, msg) {
         case "add":
             const addTimerName = msg.split(" ")[0]
             msg = msg.replace(addTimerName + " ", "")
+            if (crons[addTimerName]) {
+                await say(channel, `a timer named ${addTimerName} already exists`)
+                error(predefError("duplicate timer"))
+                return
+            }
             if (!msg.match(timeregex)) {
                 await say(channel, `no time for new timer "${addTimerName}" defined`)
                 error(predefError("missing cron timing"))
